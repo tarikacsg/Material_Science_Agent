@@ -9,10 +9,10 @@ A small agentic workflow for crystal-structure tasks:
 
 ## What this repo contains
 
-- `main.py`: example entry point that sends one request to the agent.
-- `agent.py`: LLM loop, tool schemas, and tool-calling logic.
-- `tools.py`: materials tools (`fetch_structure`, `make_supercell`, export, describe).
-- `state.py`: in-memory shared state across tool calls.
+- `src/main.py`: example entry point that sends one request to the agent.
+- `src/agent.py`: LLM loop, tool schemas, and tool-calling logic.
+- `src/tools.py`: materials tools (`fetch_structure`, `make_supercell`, export, describe).
+- `src/state.py`: in-memory shared state across tool calls.
 - `CH3NH3PbI3_2x2x2_POSCAR`: sample output file.
 - `requirement.txt`: Python dependencies.
 
@@ -65,17 +65,17 @@ MP_API_KEY=your_materials_project_key
 Run the default example:
 
 ```bash
-python main.py
+python src/main.py
 ```
 
-By default, `main.py` sends:
+By default, `src/main.py` sends:
 `Create a 2x2x2 supercell for CH3NH3PbI3 and save POSCAR`
 
-To run another task, edit the `request` string in `main.py`.
+To run another task, edit the `request` string in `src/main.py`.
 
 ## Available Tools
 
-The agent can call these tools from `tools.py`:
+The agent can call these tools from `src/tools.py`:
 
 1. `fetch_structure(material)`
 - Fetches a structure by formula from Materials Project and stores it in memory.
@@ -95,16 +95,16 @@ The agent can call these tools from `tools.py`:
 ## General Workflow
 
 1. User gives a natural-language request.
-2. `run_agent()` sends the request to the model with tool schemas.
+2. `run_agent()` in `src/agent.py` sends the request to the model with tool schemas.
 3. Model decides whether to call a tool.
 4. Python executes the tool and stores output in `STATE`.
 5. Tool result is returned to the model as a tool message.
 6. Steps repeat until the model returns a final response.
-7. `main.py` prints final output and full tool history.
+7. `src/main.py` prints final output and full tool history.
 
 ## Notes for GitHub users
 
 - Keep `.env` out of git (do not commit secrets).
-- The project currently uses Triton endpoint in `agent.py`:
+- The project currently uses Triton endpoint in `src/agent.py`:
   `https://tritonai-api.ucsd.edu/v1`
-- If you switch providers, update the `OpenAI(...)` client configuration in `agent.py`.
+- If you switch providers, update the `OpenAI(...)` client configuration in `src/agent.py`.
