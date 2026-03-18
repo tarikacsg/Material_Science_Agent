@@ -1,0 +1,4 @@
+openai
+pymatgen
+mp-api
+python-dotenv
